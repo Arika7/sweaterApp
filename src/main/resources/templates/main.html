@@ -5,6 +5,11 @@
     <title>Main</title>
 </head>
 <body>
-<p th:text="${text}"></p>
+
+
+<div th:each="message : ${messages}">
+
+    <p th:text="${message.getId() + ',' + message.getTag() + ',' + message.getText()}"></p>
+</div>
 </body>
 </html>
