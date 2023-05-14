@@ -1,15 +1,18 @@
 package com.example.sweater.models;
 
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "message")
 public class Message {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
-
+    @Column(name = "text")
     private String text;
-
+    @Column(name = "tag")
     private String tag;
 
     public int getId() {
@@ -39,6 +42,9 @@ public class Message {
     public Message(String text, String tag) {
         this.text = text;
         this.tag = tag;
+    }
+
+    public Message() {
     }
 
     @Override

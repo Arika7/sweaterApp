@@ -5,11 +5,24 @@
     <title>Main</title>
 </head>
 <body>
+<form th:method="POST" th:object="${message}">
 
+    <label for="text">Введите текст :</label>
+    <input type="text" th:field="*{text}" id="text">
+    <br/>
+    <br/>
+    <label for="tag">Введите тэг :</label>
+    <input type="text" th:field="*{tag}" id="tag">
+    <br/>
+    <br/>
 
-<div th:each="message : ${messages}">
-
-    <p th:text="${message.getId() + ',' + message.getTag() + ',' + message.getText()}"></p>
+    <input type="submit" value="POST!">
+<div th:if="${!messages.isEmpty()}">
+    <h3>Список сообщений :</h3>
+    <div th:each="message : ${messages}">
+        <p th:text="${message.getId() + ',' + message.getTag()+','+ message.getText()}"></p>
+    </div>
 </div>
+</form>
 </body>
 </html>
