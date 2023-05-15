@@ -17,12 +17,23 @@
     <br/>
 
     <input type="submit" value="POST!">
+</form>
+<form th:method="GET" >
+    <label for="filter">Filter :</label>
+    <input type="text" id="filter" name="filter">
+    <input type="submit">
+</form>
+<p th:text="${filterr}">FILTER</p>
+
 <div th:if="${!messages.isEmpty()}">
     <h3>Список сообщений :</h3>
     <div th:each="message : ${messages}">
         <p th:text="${message.getId() + ',' + message.getTag()+','+ message.getText()}"></p>
     </div>
 </div>
-</form>
+<div th:if="${messages.isEmpty()}">
+    <p>Nothing was found</p>
+</div>
+
 </body>
 </html>

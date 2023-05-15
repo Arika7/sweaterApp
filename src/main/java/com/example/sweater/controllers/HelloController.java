@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
+import java.util.List;
+
 @Controller
 public class HelloController {
 
@@ -27,11 +30,14 @@ public String hello(@RequestParam(name = "name", required = false, defaultValue 
     return "hello";
 }
 
-@GetMapping
-    public String main(Model model){
+    @GetMapping
+    public String main(Model model, @RequestParam(name = "filter", required = false) String filter){
         model.addAttribute("message", new Message());
-    model.addAttribute("messages",messageRepo.findAll());
-    return "main";
+        if(filter != null) model.addAttribute("messages", messageRepo.findByTag(filter));
+        if(filter == null || filter.isEmpty()) model.addAttribute("messages",messageRepo.findAll());
+        if(filter != null && filter.isBlank()) return "redirect:/";
+        model.addAttribute("filterr", filter);
+        return "main";
 }
 
     @PostMapping()
