@@ -5,7 +5,7 @@
     <title>Main</title>
 </head>
 <body>
-<form th:method="POST" th:object="${message}">
+<form th:method="POST" th:object="${message}" th:action="@{/main}">
 
     <label for="text">Введите текст :</label>
     <input type="text" th:field="*{text}" id="text">
@@ -18,7 +18,7 @@
 
     <input type="submit" value="POST!">
 </form>
-<form th:method="GET" >
+<form th:method="GET" th:action="@{/main}">
     <label for="filter">Filter :</label>
     <input type="text" id="filter" name="filter">
     <input type="submit">
@@ -34,5 +34,8 @@
     <p>Nothing was found</p>
 </div>
 
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
 </body>
 </html>

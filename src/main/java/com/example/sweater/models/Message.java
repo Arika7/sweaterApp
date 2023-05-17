@@ -4,15 +4,11 @@ package com.example.sweater.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "message")
 public class Message {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(name = "text")
     private String text;
-    @Column(name = "tag")
     private String tag;
 
     public int getId() {

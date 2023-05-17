@@ -26,26 +26,26 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @GetMapping("/hello")
+    @GetMapping("/")
 public String hello(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model){
     model.addAttribute("name", name);
     return "hello";
 }
 
-    @GetMapping
+    @GetMapping("/main")
     public String main(Model model, @RequestParam(name = "filter", required = false) String filter){
         model.addAttribute("message", new Message());
         if(filter != null) model.addAttribute("messages", messageService.findByTag(filter));
         if(filter == null || filter.isEmpty()) model.addAttribute("messages",messageService.findAll());
-        if(filter != null && filter.isBlank()) return "redirect:/";
+        if(filter != null && filter.isBlank()) return "redirect:/main";
         model.addAttribute("filterr", filter);
         return "main";
 }
 
-    @PostMapping()
+    @PostMapping("/main")
     public String add(@ModelAttribute("message") Message message){
 
         messageService.save(message);
-        return "redirect:/";
+        return "redirect:/main";
 }
 }
