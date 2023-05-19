@@ -3,17 +3,22 @@ package com.example.sweater.services;
 import com.example.sweater.models.Role;
 import com.example.sweater.models.User;
 import com.example.sweater.repositories.UserRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService{
 
     private final UserRepo userRepo;
-
+    @Autowired
     public UserService(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
@@ -27,4 +32,11 @@ public class UserService {
         user.setRoles(Collections.singletonList(Role.USER));
         userRepo.save(user);
     }
+
+    public List<User> findAll(){
+        return userRepo.findAll();
+    }
+
+    public Optional<User> findById(int id){return userRepo.findById(id);}
+
 }

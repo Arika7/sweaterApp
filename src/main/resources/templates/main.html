@@ -5,6 +5,11 @@
     <title>Main</title>
 </head>
 <body>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+<br>
+<span><a href="/users">User list</a></span>
 <form th:method="POST" th:object="${message}" th:action="@{/main}">
 
     <label for="text">Введите текст :</label>
@@ -21,21 +26,20 @@
 <form th:method="GET" th:action="@{/main}">
     <label for="filter">Filter :</label>
     <input type="text" id="filter" name="filter">
-    <input type="submit">
+    <input value="Filter!" type="submit">
 </form>
 
 <div th:if="${!messages.isEmpty()}">
     <h3>Список сообщений :</h3>
     <div th:each="message : ${messages}">
-        <p th:text="${message.getId() + ',' + message.getTag()+','+ message.getText()}"></p>
+        <span th:text="${message.getId() + ',' + message.getTag()+','+ message.getText()}"></span>
+        <strong th:text="${message.getAuthorName()}"></strong>
     </div>
 </div>
 <div th:if="${messages.isEmpty()}">
     <p>Nothing was found</p>
 </div>
 
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
+
 </body>
 </html>

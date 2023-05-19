@@ -2,18 +2,16 @@ package com.example.sweater.controllers;
 
 
 import com.example.sweater.models.Message;
-import com.example.sweater.repositories.MessageRepo;
+import com.example.sweater.models.User;
 import com.example.sweater.services.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Collections;
-import java.util.List;
 
 @Controller
 public class MessageController {
@@ -29,7 +27,7 @@ public class MessageController {
     @GetMapping("/")
 public String hello(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model){
     model.addAttribute("name", name);
-    return "hello";
+    return "/auth/hello";
 }
 
     @GetMapping("/main")
@@ -43,7 +41,7 @@ public String hello(@RequestParam(name = "name", required = false, defaultValue 
 }
 
     @PostMapping("/main")
-    public String add(@ModelAttribute("message") Message message){
+    public String add(@AuthenticationPrincipal User user , @ModelAttribute("message") Message message, Model model){
 
         messageService.save(message);
         return "redirect:/main";

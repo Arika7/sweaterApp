@@ -1,7 +1,6 @@
 package com.example.sweater.controllers;
 
 import com.example.sweater.models.User;
-import com.example.sweater.repositories.UserRepo;
 import com.example.sweater.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +21,7 @@ public class AuthController {
 
     @GetMapping("/registration")
     public String register(){
-        return "registration";
+        return "/auth/registration";
     }
 
     @PostMapping("/registration")
@@ -30,7 +29,7 @@ public class AuthController {
        Optional<User> userFromDb = userService.findByUsername(user.getUsername());
        if(userFromDb.isPresent()){
            model.addAttribute("message", "User already exists");
-           return "registration";
+           return "/auth/registration";
        }
        userService.save(user);
         return "redirect:/login";
