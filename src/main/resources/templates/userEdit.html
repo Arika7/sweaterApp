@@ -2,8 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${user.get().getUsername()}">User</title>
+    <title th:text="${user.getUsername()}">User</title>
 </head>
 <body>
+<div th:if="${error}">User is not found!</div>
+<div th:if="${user}">
+<form th:action="@{/users/{id}(id=${user.getId()})}" th:method="PATCH" th:object="${user}">
+    <label for="username" >User name: </label>
+    <input type="text" id="username" th:field="*{username}">
+    <p>
+        <label>Roles:
+            <input type="checkbox" name="roles"
+                   th:each="role : ${roles}"
+                   th:text="${role}"
+                   th:value="${role}"
+                    th:checked="${user.getRoles().contains(role)}"
+            />
+        </label>
+    </p>
+    <input type="submit" value="Edit!">
+</form>
+</div>
 </body>
 </html>

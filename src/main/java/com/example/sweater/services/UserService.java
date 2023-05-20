@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 public class UserService{
 
     private final UserRepo userRepo;
@@ -26,7 +28,7 @@ public class UserService{
     public Optional<User> findByUsername(String username){
         return userRepo.findByUsername(username);
     }
-
+    @Transactional
     public void save(User user){
         user.setActive(true);
         user.setRoles(Collections.singletonList(Role.USER));
@@ -39,4 +41,9 @@ public class UserService{
 
     public Optional<User> findById(int id){return userRepo.findById(id);}
 
+    @Transactional
+    public void update(int id, User updatedUser){
+        updatedUser.setId(id);
+        userRepo.save(updatedUser);
+    }
 }
