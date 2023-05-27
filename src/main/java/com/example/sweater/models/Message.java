@@ -13,6 +13,16 @@ public class Message {
     @ManyToOne(fetch = FetchType.EAGER)
     private User author;
 
+    private String filename;
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
     public User getAuthor() {
         return author;
     }

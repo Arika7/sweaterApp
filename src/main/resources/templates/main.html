@@ -10,7 +10,7 @@
 </form>
 <br>
 <span><a href="/users">User list</a></span>
-<form th:method="POST" th:object="${message}" th:action="@{/main}">
+<form th:method="POST" th:object="${message}" th:action="@{/main}" enctype="multipart/form-data">
 
     <label for="text">Введите текст :</label>
     <input type="text" th:field="*{text}" id="text">
@@ -19,6 +19,8 @@
     <label for="tag">Введите тэг :</label>
     <input type="text" th:field="*{tag}" id="tag">
     <br/>
+    <label for="file">Upload file:</label>
+    <input type="file" name="file" id="file">
     <br/>
 
     <input type="submit" value="POST!">
@@ -35,6 +37,10 @@
         <span th:text="${message.getId() + ',' + message.getTag()+','+ message.getText()}"></span>
         <strong th:text="${message.getAuthorName()}"></strong>
     </div>
+
+        <img th:attr="src=@{/img/${message.filename}}" alt="Image"/>
+        <img src="file:///C:/Users/Arif/Desktop/BMW_logo_(gray).svg.png" alt="Image"/>
+
 </div>
 <div th:if="${messages.isEmpty()}">
     <p>Nothing was found</p>
