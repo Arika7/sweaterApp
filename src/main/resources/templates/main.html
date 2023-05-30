@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Main</title>
+    <link th:href="@{/static/style.css}" rel="stylesheet"/>
 </head>
 <body>
 <form th:action="@{/logout}" th:method="post">
@@ -20,7 +21,7 @@
     <input type="text" th:field="*{tag}" id="tag">
     <br/>
     <label for="file">Upload file:</label>
-    <input type="file" name="file" id="file">
+    <input type="file" name="file" id="file" accept="image/png, image/jpeg">
     <br/>
 
     <input type="submit" value="POST!">
@@ -36,10 +37,11 @@
     <div th:each="message : ${messages}">
         <span th:text="${message.getId() + ',' + message.getTag()+','+ message.getText()}"></span>
         <strong th:text="${message.getAuthorName()}"></strong>
+        <br>
+        <img th:src="${message.getPhotosImagePath()}">
     </div>
 
-        <img th:attr="src=@{/img/${message.filename}}" alt="Image"/>
-        <img src="file:///C:/Users/Arif/Desktop/BMW_logo_(gray).svg.png" alt="Image"/>
+
 
 </div>
 <div th:if="${messages.isEmpty()}">

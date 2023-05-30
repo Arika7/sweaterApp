@@ -18,6 +18,12 @@ public class Message {
     public String getFilename() {
         return filename;
     }
+    @Transient
+    public String getPhotosImagePath() {
+        if (filename == null) return null;
+
+        return "/uploads/" + filename;
+    }
 
     public void setFilename(String filename) {
         this.filename = filename;
