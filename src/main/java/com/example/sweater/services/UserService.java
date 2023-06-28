@@ -4,24 +4,20 @@ import com.example.sweater.models.Role;
 import com.example.sweater.models.User;
 import com.example.sweater.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
 public class UserService{
 
+    private final EmailSender emailSender;
     private final UserRepo userRepo;
     @Autowired
-    public UserService(UserRepo userRepo) {
+    public UserService(EmailSender emailSender, UserRepo userRepo) {
+        this.emailSender = emailSender;
         this.userRepo = userRepo;
     }
 
@@ -32,7 +28,16 @@ public class UserService{
     public void save(User user){
         user.setActive(true);
         user.setRoles(Collections.singletonList(Role.USER));
+        user.setActivationCode(UUID.randomUUID().toString());
         userRepo.save(user);
+
+        if(!user.getEmail().isEmpty()){
+            String message = String.format(
+                    "Hello, %s! \n"+
+                            "Welcome to Sweater. Please , click the next link : http://localhost:8080/activate/%s", user.getUsername(), user.getActivationCode()
+            );
+            emailSender.send(user.getEmail(), "Activation code", message);
+        }
     }
 
     public List<User> findAll(){
@@ -45,5 +50,16 @@ public class UserService{
     public void update(int id, User updatedUser){
         updatedUser.setId(id);
         userRepo.save(updatedUser);
+    }
+    @Transactional
+    public boolean activateUser(String code) {
+        Optional<User> optUser = userRepo.findByActivationCode(code);
+
+        if(optUser.isEmpty()) return false;
+        User user = optUser.get();
+        user.setActivationCode(null);
+
+        update(user.getId(), user);
+        return true;
     }
 }

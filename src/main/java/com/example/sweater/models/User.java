@@ -47,6 +47,9 @@ public class User implements UserDetails {
 
     private boolean active;
 
+    private String email;
+    private String activationCode;
+
     @OneToMany
     private List<Message> message;
 
@@ -99,6 +102,30 @@ public class User implements UserDetails {
         return getRoles().contains(Role.ADMIN);
     }
 
+    public List<Message> getMessage() {
+        return message;
+    }
+
+    public void setMessage(List<Message> message) {
+        this.message = message;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
+
     public User() {
     }
 
@@ -116,6 +143,8 @@ public class User implements UserDetails {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", active=" + active +
+                ", email='" + email + '\'' +
+                ", activationCode='" + activationCode + '\'' +
                 ", message=" + message +
                 ", roles=" + roles +
                 '}';

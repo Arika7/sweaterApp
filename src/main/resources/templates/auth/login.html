@@ -26,6 +26,11 @@
     <div class="text my-3" style="color: red" th:if="${param.error}">
       Invalid username and password.
     </div>
+    <div class="text my-3" style="color: green" th:if="${messageS}">
+      <p th:text="${messageS}"></p>
+    </div><div class="text my-3" style="color: red" th:if="${messageN}">
+      <p th:text="${messageN}"></p>
+    </div>
     <button type="submit" class="btn btn-primary">Login</button>
     <a class="btn btn-outline-primary" href="/registration" role="button">Register!</a>
   </form>
