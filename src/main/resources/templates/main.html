@@ -8,48 +8,61 @@
    </head>
 <body>
 <div th:replace="parts/fragments.html :: scripts"></div>
-<form th:action="@{/logout}" th:method="post">
-    <input type="submit" value="Sign Out"/>
+<div th:replace="parts/navbar.html::navbar"></div>
+<div class="container mx-8">
+    <br>
+<form class="row g-3" th:method="GET" th:action="@{/main}">
+    <div class="col-auto">
+        <input type="text" class="form-control" id="filter" placeholder="Search by tag" name="filter" >
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary mb-3">Filter</button>
+    </div>
 </form>
-<br>
-<span><a href="/users">User list</a></span>
-<form th:method="POST" th:object="${message}" th:action="@{/main}" enctype="multipart/form-data">
-
-    <label for="text">Введите текст :</label>
-    <input type="text" th:field="*{text}" id="text">
-    <br/>
-    <br/>
-    <label for="tag">Введите тэг :</label>
-    <input type="text" th:field="*{tag}" id="tag">
-    <br/>
-    <label for="file">Upload file:</label>
-    <input type="file" name="file" id="file" accept="image/png, image/jpeg">
-    <br/>
-
-    <input type="submit" value="POST!">
-</form>
-<form th:method="GET" th:action="@{/main}">
-    <label for="filter">Filter :</label>
-    <input type="text" id="filter" name="filter">
-    <input value="Filter!" type="submit">
-</form>
-
-<div th:if="${!messages.isEmpty()}">
-    <h3>Список сообщений :</h3>
-    <div th:each="message : ${messages}">
-        <span th:text="${message.getId() + ',' + message.getTag()+','+ message.getText()}"></span>
-        <strong th:text="${message.getAuthorName()}"></strong>
-        <br>
-        <img th:src="${message.getPhotosImagePath()}">
+    <p>
+        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Add new message
+        </a>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="form-group  mt-2">
+            <form th:method="POST" th:object="${message}" th:action="@{/main}" enctype="multipart/form-data">
+                <div class="form-group my-3">
+                    <input class="form-control" type="text" th:field="*{text}" id="text" placeholder="Введите сообщение">
+                </div>
+                <div class="form-group my-3">
+                    <input class="form-control" type="text" th:field="*{tag}" id="tag" placeholder="Тэг">
+                </div>
+                <div class="my-3">
+                    <input class="form-control" type="file" id="formFile" name="file" accept="image/png, image/jpeg">
+                </div>
+                <input type="submit" value="Добавить" class="btn btn-primary my-3">
+            </form>
+        </div>
     </div>
 
 
 
-</div>
+    <div th:if="${!messages.isEmpty()}">
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            <div class="col" th:each="message : ${messages}">
+                <div class="card h-100 mx-3">
+                    <img th:src="${message.getPhotosImagePath()}">
+                    <div class="card-body">
+                    <span th:text="${message.getTag()+','+ message.getText()}"></span>
+                    </div>
+                    <div class="card-footer">
+                        <small th:text="*{message.authorName}"></small>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
 <div th:if="${messages.isEmpty()}">
     <p>Nothing was found</p>
 </div>
 
-
+</div>
 </body>
 </html>

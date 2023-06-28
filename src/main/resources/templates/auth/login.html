@@ -5,22 +5,30 @@
   <th:block th:replace="parts/fragments.html :: styless">
   </th:block>
 </head>
-<h1>Login page</h1>
 <body>
 <div th:replace="parts/fragments.html :: scripts"></div>
-<div th:if="${param.error}">
-  Invalid username and password.
+<div th:replace="parts/navbar.html::navbar"></div>
+<div class="container d-flex justify-content-center align-items-center">
+  <form th:action="@{/login}" th:method="POST">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <div class="mb-3">
+      <h2 class="mb-5">Login</h2>
+      <label for="username" class="form-label">Username</label>
+      <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="Username">
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+    </div>
+    <div class="text my-3" style="color:red" th:if="${param.logout}">
+      You have been logged out.
+    </div>
+    <div class="text my-3" style="color: red" th:if="${param.error}">
+      Invalid username and password.
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+    <a class="btn btn-outline-primary" href="/registration" role="button">Register!</a>
+  </form>
 </div>
-<div th:if="${param.logout}">
-  You have been logged out.
-</div>
-<form th:action="@{/login}" th:method="post">
-  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-  <div><label> User Name : <input type="text" name="username"/> </label></div>
-  <div><label> Password: <input type="password" name="password"/> </label></div>
-  <div><input type="submit" value="Sign In"/></div>
-</form>
-
-<a href="/registration"> Register! </a>
 </body>
 </html>

@@ -7,15 +7,31 @@
 </head>
 <body>
 <div th:replace="parts/fragments.html :: scripts"></div>
-<div th:if="message" style="color:red">
-  <p th:text="${message}"></p>
+<div th:replace="parts/navbar.html::navbar"></div>
+<!--<form th:action="@{/registration}" th:method="post">-->
+<!--  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+<!--  <div><label> User Name : <input type="text" name="username"/> </label></div>-->
+<!--  <div><label> Password: <input type="password" name="password"/> </label></div>-->
+<!--  <div><input type="submit" value="Register"/></div>-->
+<!--</form>-->
+<div class="container d-flex justify-content-center align-items-center">
+  <form th:action="@{/registration}" th:method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <div class="mb-3">
+      <h2 class="mb-5">Registration</h2>
+      <label for="username" class="form-label">Username</label>
+      <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="Username">
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+      <div th:if="message" style="color:red">
+        <p th:text="${message}"></p>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+    <a type="button" href="/login" class="btn btn-outline-danger" role="button">Back</a>
+  </form>
 </div>
-<form th:action="@{/registration}" th:method="post">
-  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-  <div><label> User Name : <input type="text" name="username"/> </label></div>
-  <div><label> Password: <input type="password" name="password"/> </label></div>
-  <div><input type="submit" value="Register"/></div>
-</form>
-
 </body>
 </html>
