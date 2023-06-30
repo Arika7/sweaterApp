@@ -8,12 +8,7 @@
 <body>
 <div th:replace="parts/fragments.html :: scripts"></div>
 <div th:replace="parts/navbar.html::navbar"></div>
-<!--<form th:action="@{/registration}" th:method="post">-->
-<!--  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
-<!--  <div><label> User Name : <input type="text" name="username"/> </label></div>-->
-<!--  <div><label> Password: <input type="password" name="password"/> </label></div>-->
-<!--  <div><input type="submit" value="Register"/></div>-->
-<!--</form>-->
+
 <div class="container d-flex justify-content-center align-items-center">
   <form th:action="@{/registration}" th:method="post">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>

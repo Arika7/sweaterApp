@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Spring Security Example </title>
+    <th:block th:replace="parts/fragments.html :: styless">
+    </th:block>
+</head>
+<body>
+<div th:replace="parts/fragments.html :: scripts"></div>
+<div th:replace="parts/navbar.html::navbar"></div>
+
+<div class="container d-flex justify-content-center align-items-center">
+    <form th:action="@{/users/profile}" th:method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <div class="mb-3">
+            <h2 class="mb-5" th:text="${username}">Username</h2>
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" th:value="${email !=null}? ${email} : ''">
+        </div>
+        <button type="submit" class="btn btn-primary">Edit</button>
+        <a type="button" href="/main" class="btn btn-outline-danger" role="button">Back</a>
+    </form>
+</div>
+</body>
+</html>
+

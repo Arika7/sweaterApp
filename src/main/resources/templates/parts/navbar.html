@@ -21,6 +21,9 @@
       <li class="nav-item active" sec:authorize="hasAuthority('ADMIN')">
         <a class="nav-link" href="/users">User list</a>
       </li>
+      <li class="nav-item active" sec:authorize="isAuthenticated()">
+        <a class="nav-link" href="/users/profile">Profile</a>
+      </li>
     </ul>
     <div class="navbar-text navbar-nav ms-auto pe-2" sec:authentication="name" >Bob</div>
     <form th:action="@{/logout}" th:method="post" sec:authorize="isAuthenticated()">

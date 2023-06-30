@@ -31,6 +31,10 @@ public class UserService{
         user.setActivationCode(UUID.randomUUID().toString());
         userRepo.save(user);
 
+        sendMessage(user);
+    }
+
+    private void sendMessage(User user) {
         if(!user.getEmail().isEmpty()){
             String message = String.format(
                     "Hello, %s! \n"+
@@ -62,4 +66,30 @@ public class UserService{
         update(user.getId(), user);
         return true;
     }
+
+    @Transactional
+    public void saveUser(User user, int id){
+        User oldUser = userRepo.findById(id).get();
+        oldUser.setUsername(user.getUsername());
+        oldUser.setRoles(user.getRoles());
+        update(id,oldUser);
+    }
+
+    @Transactional
+    public void updateProfile(User authUser, User user){
+        String userEmail = authUser.getEmail();
+        String email = user.getEmail();
+        boolean isEmailChanged = (email != null && !email.equals(userEmail)) ||
+                (userEmail != null && !userEmail.equals(email));
+
+        if(isEmailChanged) authUser.setEmail(email);
+        if(!user.getPassword().isEmpty()) authUser.setPassword(user.getPassword());
+
+        if(!user.getEmail().isEmpty()) authUser.setActivationCode(UUID.randomUUID().toString());
+
+        update(authUser.getId(), authUser);
+
+        if(isEmailChanged) sendMessage(authUser);
+    }
+
 }
