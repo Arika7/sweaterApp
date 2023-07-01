@@ -5,6 +5,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 import java.util.List;
 
@@ -40,13 +43,28 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    @NotEmpty(message = "Username cannot be empty")
     private String username;
 
+    @NotEmpty(message = "Password cannot be empty")
     private String password;
+
+    @Transient
+    @NotEmpty(message = "Password confirmation cannot be empty")
+    private String password2 = "0";
+
+    public String getPassword2() {
+        return password2;
+    }
+
+    public void setPassword2(String password2) {
+        this.password2 = password2;
+    }
 
     private boolean active;
 
+    @Email(message = "Email is not correct")
+    @NotEmpty(message = "Email cannot be empty")
     private String email;
     private String activationCode;
 
@@ -129,11 +147,12 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String password, boolean active, List<Role> roles) {
+    public User(String username, String password, boolean active, List<Role> roles, String password2) {
         this.username = username;
         this.password = password;
         this.active = active;
         this.roles = roles;
+        this.password2 = password2;
     }
 
     @Override
@@ -142,6 +161,7 @@ public class User implements UserDetails {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", password2='" + password2 + '\'' +
                 ", active=" + active +
                 ", email='" + email + '\'' +
                 ", activationCode='" + activationCode + '\'' +

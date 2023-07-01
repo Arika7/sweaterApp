@@ -11,12 +11,14 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -41,8 +43,8 @@ public String hello(@RequestParam(name = "name", required = false, defaultValue 
 }
 
     @GetMapping("/main")
-    public String main(Model model, @RequestParam(name = "filter", required = false) String filter){
-        model.addAttribute("message", new Message());
+    public String main(Model model, @RequestParam(name = "filter", required = false) String filter, Message message){
+        model.addAttribute("message1", new Message());
         if(filter != null) model.addAttribute("messages", messageService.findByTag(filter));
         if(filter == null || filter.isEmpty()) model.addAttribute("messages",messageService.findAll());
         if(filter != null && filter.isBlank()) return "redirect:/main";
@@ -51,7 +53,13 @@ public String hello(@RequestParam(name = "name", required = false, defaultValue 
 }
 
     @PostMapping("/main")
-    public String add(@AuthenticationPrincipal User user , @ModelAttribute("message") Message message, Model model, @RequestParam("file") MultipartFile file) throws IOException {
+    public String add(@AuthenticationPrincipal User user , @ModelAttribute("message") @Valid Message message, BindingResult bindingResult,  Model model, @RequestParam("file") MultipartFile file) throws IOException {
+        model.addAttribute("messageText", message.getText());
+        model.addAttribute("messageTag", message.getTag());
+        if(bindingResult.hasErrors()){
+            model.addAttribute("messages",messageService.findAll());
+            return "/main";
+        }else {
         if(file != null && !file.getOriginalFilename().isEmpty()){
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         String uuidFile = UUID.randomUUID().toString();
@@ -61,6 +69,6 @@ public String hello(@RequestParam(name = "name", required = false, defaultValue 
         FileUploadUtil.saveFile(uploadDir,resultFileName,file);}
         message.setAuthor(user);
         messageService.save(message);
-        return "redirect:/main";
+        return "redirect:/main";}
 }
 }

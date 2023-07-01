@@ -24,14 +24,16 @@
             Add new message
         </a>
     </p>
-    <div class="collapse" id="collapseExample">
+    <div th:class="'collapse' + ${messageText!= null || messageTag!= null ? 'show' : ''}" id="collapseExample">
         <div class="form-group  mt-2">
             <form th:method="POST" th:object="${message}" th:action="@{/main}" enctype="multipart/form-data">
                 <div class="form-group my-3">
-                    <input class="form-control" type="text" th:field="*{text}" id="text" placeholder="Введите сообщение">
+                    <input th:class="'form-control '+${#fields.hasErrors('text') ? 'is-invalid' : ''}" type="text" th:value="${messageText!= null? 'messageText':''}" th:field="*{text}" id="text" placeholder="Введите сообщение" aria-describedby="validationServer01Feedback">
+                    <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}" id="validationServer01Feedback" class="invalid-feedback">Error</div>
                 </div>
                 <div class="form-group my-3">
-                    <input class="form-control" type="text" th:field="*{tag}" id="tag" placeholder="Тэг">
+                    <input th:class="'form-control '+${#fields.hasErrors('tag') ? 'is-invalid' : ''}" type="text" th:value="${messageTag!= null? 'messageTag':''}" th:field="*{tag}" id="tag" placeholder="Тэг">
+                    <div th:if="${#fields.hasErrors('tag')}" th:errors="*{tag}" id="validationServer02Feedback" class="invalid-feedback">Error</div>
                 </div>
                 <div class="my-3">
                     <input class="form-control" type="file" id="formFile" name="file" accept="image/png, image/jpeg">

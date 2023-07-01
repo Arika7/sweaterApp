@@ -1,14 +1,23 @@
 package com.example.sweater.models;
 
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @NotEmpty(message = "Please fill the message")
+    @Size(max = 2048, message = "Max length of message is 2048 characters")
     private String text;
+    @NotEmpty(message = "Message can't be without tag")
+    @Size(max = 255, message = "Tag is too long(max 255)")
     private String tag;
     @ManyToOne(fetch = FetchType.EAGER)
     private User author;

@@ -9,25 +9,26 @@
 </head>
 <body>
 <div th:replace="parts/fragments.html :: scripts"></div>
-List of users
-<table>
+<div class="container mx-4 my-3">
+    <h5>List of users</h5>
+<table class="table">
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Role</th>
+        <th scope="col">Id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Role</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="user: ${users}">
+        <th th:text="${user.getId()}" scope="row">Id</th>
         <td th:text="${user.getUsername()}">Text</td>
-        <td>
-    <span th:each="role,iterStat : ${user.getRoles()}"
-          th:text="${role} + ${!iterStat.last ? ', ' : ''}"></span>
-        </td>
+        <td><span th:each="role,iterStat : ${user.getRoles()}" th:text="${role} + ${!iterStat.last ? ', ' : ''}"></span></td>
         <td><a th:href="@{/users/{id}(id=${user.getId()})}">Click</a> </td>
     </tr>
     </tbody>
 </table>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
 </html>

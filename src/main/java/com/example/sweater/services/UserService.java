@@ -4,6 +4,7 @@ import com.example.sweater.models.Role;
 import com.example.sweater.models.User;
 import com.example.sweater.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,10 +16,12 @@ public class UserService{
 
     private final EmailSender emailSender;
     private final UserRepo userRepo;
+    private final PasswordEncoder passwordEncoder;
     @Autowired
-    public UserService(EmailSender emailSender, UserRepo userRepo) {
+    public UserService(EmailSender emailSender, UserRepo userRepo, PasswordEncoder passwordEncoder) {
         this.emailSender = emailSender;
         this.userRepo = userRepo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Optional<User> findByUsername(String username){
@@ -26,9 +29,9 @@ public class UserService{
     }
     @Transactional
     public void save(User user){
-        user.setActive(true);
         user.setRoles(Collections.singletonList(Role.USER));
         user.setActivationCode(UUID.randomUUID().toString());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
 
         sendMessage(user);
@@ -61,6 +64,7 @@ public class UserService{
 
         if(optUser.isEmpty()) return false;
         User user = optUser.get();
+        user.setActive(true);
         user.setActivationCode(null);
 
         update(user.getId(), user);

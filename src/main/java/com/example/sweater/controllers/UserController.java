@@ -9,8 +9,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
@@ -44,7 +46,9 @@ public class UserController {
     }
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/{id}")
-    public String userSave(@ModelAttribute("user") User user, @PathVariable("id")int id){
+    public String userSave(@ModelAttribute("user") @Valid User user,BindingResult bindingResult, @PathVariable("id")int id){
+        if(bindingResult.hasErrors()) return "userEdit";
+
         userService.saveUser(user, id);
         return "redirect:/users";
     }
@@ -57,7 +61,8 @@ public class UserController {
     }
 
     @PostMapping("/profile")
-    public String updateProfile(@AuthenticationPrincipal User authUser , @ModelAttribute("user") User user){
+    public String updateProfile(@AuthenticationPrincipal User authUser , @ModelAttribute("user") @Valid User user, BindingResult bindingResult){
+        if(bindingResult.hasErrors()) return "profile";
         userService.updateProfile(authUser, user);
         return "redirect:/users/profile";
     }

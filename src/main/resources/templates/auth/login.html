@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
   <title>Login page </title>
   <th:block th:replace="parts/fragments.html :: styless">
@@ -8,7 +9,7 @@
 <body>
 <div th:replace="parts/fragments.html :: scripts"></div>
 <div th:replace="parts/navbar.html::navbar"></div>
-<div class="container d-flex justify-content-center align-items-center">
+<div class="container d-flex justify-content-center align-items-center" sec:authorize="!isAuthenticated()">
   <form th:action="@{/login}" th:method="POST">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <div class="mb-3">
@@ -24,7 +25,7 @@
       You have been logged out.
     </div>
     <div class="text my-3" style="color: red" th:if="${param.error}">
-      Invalid username and password.
+      Invalid username or password.
     </div>
     <div class="text my-3" style="color: green" th:if="${messageS}">
       <p th:text="${messageS}"></p>
