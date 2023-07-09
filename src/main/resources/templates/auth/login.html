@@ -5,6 +5,7 @@
   <title>Login page </title>
   <th:block th:replace="parts/fragments.html :: styless">
   </th:block>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
 <div th:replace="parts/fragments.html :: scripts"></div>
@@ -21,15 +22,15 @@
       <label for="password" class="form-label">Password</label>
       <input type="password" class="form-control" id="password" name="password" placeholder="Password">
     </div>
-    <div class="text my-3" style="color:red" th:if="${param.logout}">
+    <div class="alert alert-danger" role="alert" style="color:red" th:if="${param.logout}">
       You have been logged out.
     </div>
-    <div class="text my-3" style="color: red" th:if="${param.error}">
+    <div class="alert alert-danger" role="alert" style="color: red" th:if="${param.error}">
       Invalid username or password.
     </div>
-    <div class="text my-3" style="color: green" th:if="${messageS}">
+    <div class="alert alert-success" role="alert" style="color: green" th:if="${messageS}">
       <p th:text="${messageS}"></p>
-    </div><div class="text my-3" style="color: red" th:if="${messageN}">
+    </div><div class="alert alert-danger" role="alert" style="color: red" th:if="${messageN}">
       <p th:text="${messageN}"></p>
     </div>
     <button type="submit" class="btn btn-primary">Login</button>

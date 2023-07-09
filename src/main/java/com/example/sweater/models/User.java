@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -52,6 +53,7 @@ public class User implements UserDetails {
     @Transient
     @NotEmpty(message = "Password confirmation cannot be empty")
     private String password2 = "0";
+
 
     public String getPassword2() {
         return password2;
