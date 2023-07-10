@@ -62,7 +62,7 @@ public class UserController {
 
     @PostMapping("/profile")
     public String updateProfile(@AuthenticationPrincipal User authUser , @ModelAttribute("user") @Valid User user, BindingResult bindingResult){
-        if(bindingResult.hasErrors()) return "profile";
+        if(bindingResult.hasFieldErrors("email")) return "profile";
         userService.updateProfile(authUser, user);
         return "redirect:/users/profile";
     }

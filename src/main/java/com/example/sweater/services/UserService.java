@@ -83,17 +83,28 @@ public class UserService{
     public void updateProfile(User authUser, User user){
         String userEmail = authUser.getEmail();
         String email = user.getEmail();
-        boolean isEmailChanged = (email != null && !email.equals(userEmail)) ||
+        String userPassword = authUser.getPassword();
+        String password = user.getPassword();
+        boolean isEmailChanged = (!email.isEmpty() && !email.equals(userEmail)) ||
                 (userEmail != null && !userEmail.equals(email));
+        boolean isPasswordChanged = (!password.isEmpty()&&!password.equals(userPassword));
 
-        if(isEmailChanged) authUser.setEmail(email);
-        if(!user.getPassword().isEmpty()) authUser.setPassword(user.getPassword());
+        if(isPasswordChanged) authUser.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        if(!user.getEmail().isEmpty()) authUser.setActivationCode(UUID.randomUUID().toString());
+        if(isEmailChanged){
+            authUser.setEmail(email);
+            authUser.setActivationCode(UUID.randomUUID().toString());
+            sendMessage(authUser);
+            authUser.setActive(false);
+        }
 
-        update(authUser.getId(), authUser);
+        if(isEmailChanged || isPasswordChanged){
+            update(authUser.getId(), authUser);
+        }
 
-        if(isEmailChanged) sendMessage(authUser);
+
+
+
     }
 
 }

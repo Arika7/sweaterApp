@@ -20,6 +20,7 @@
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" th:value="${email !=null}? ${email} : ''">
+            <span style="color: red">After changing your mail you will get activation code</span>
         </div>
         <button type="submit" class="btn btn-primary">Edit</button>
         <a type="button" href="/main" class="btn btn-outline-danger" role="button">Back</a>
