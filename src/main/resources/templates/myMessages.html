@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+    <th:block th:replace="parts/fragments.html :: styless">
+    </th:block>
+</head>
+<body>
+<div th:replace="parts/fragments.html :: scripts"></div>
+<div th:replace="parts/navbar.html::navbar"></div>
+<div class="container mx-8">
+    <br>
+    <div th:if="${!messages.isEmpty()}">
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            <div class="col" th:each="message : ${messages}">
+                <div class="card h-100 mx-3">
+                    <img th:src="${message.getPhotosImagePath()}">
+                    <div class="card-body">
+                        <span th:text="${message.getTag()+','+ message.getText()}"></span>
+                    </div>
+                    <div class="card-footer">
+                        <small th:text="*{message.authorName}"></small>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:if="${messages.isEmpty()}">
+        <p>Nothing was found</p>
+    </div>
+
+</div>
+</body>
+</html>

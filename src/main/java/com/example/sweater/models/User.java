@@ -70,7 +70,7 @@ public class User implements UserDetails {
     private String email;
     private String activationCode;
 
-    @OneToMany
+    @OneToMany(mappedBy = "author",cascade = CascadeType.ALL)
     private List<Message> message;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)

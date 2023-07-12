@@ -22,6 +22,9 @@
         <a class="nav-link" href="/users">User list</a>
       </li>
       <li class="nav-item active" sec:authorize="isAuthenticated()">
+        <a class="nav-link" th:href="@{/user-messages/{id}/(id=${#authentication.principal.id})}">My messages</a>
+      </li>
+      <li class="nav-item active" sec:authorize="isAuthenticated()">
         <a class="nav-link" href="/users/profile">Profile</a>
       </li>
     </ul>

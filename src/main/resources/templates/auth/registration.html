@@ -33,15 +33,16 @@
       <label for="email" class="form-label">Email</label>
       <input type="email" th:field="*{email}" th:class="'form-control '+${#fields.hasErrors('email') ? 'is-invalid' : ''}" id="email" name="email" placeholder="example@gmail.com" aria-describedby="validationServer03Feedback">
       <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" id="validationServer03Feedback" class="invalid-feedback">Error</div>
-      <div th:if="message" style="color:red">
-        <p th:text="${message}"></p>
-      </div>
+
     </div>
     <div class="mb-3">
       <div class="g-recaptcha" data-sitekey="6LcrWf8mAAAAAEpJO75_lMZdCzJROpgkaOGe32oA"></div>
     </div>
     <div class="mb-3">
     <div th:if="${captchaError}" id="ErrorText" class="text-danger">Please fill the captcha</div>
+      <div th:if="message" style="color:red">
+        <p th:text="${message}"></p>
+      </div>
       </div>
 
     <button type="submit" class="btn btn-primary">Register</button>

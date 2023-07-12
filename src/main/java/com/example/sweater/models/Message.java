@@ -19,6 +19,7 @@ public class Message {
     @NotEmpty(message = "Message can't be without tag")
     @Size(max = 255, message = "Tag is too long(max 255)")
     private String tag;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private User author;
 
