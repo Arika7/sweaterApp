@@ -72,7 +72,7 @@ public class UserService{
     }
 
     @Transactional
-    public void saveUser(User user, int id){
+    public void saveUserRoles(User user, int id){
         User oldUser = userRepo.findById(id).get();
         oldUser.setUsername(user.getUsername());
         oldUser.setRoles(user.getRoles());

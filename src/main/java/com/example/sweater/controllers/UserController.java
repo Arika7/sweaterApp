@@ -47,9 +47,9 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/{id}")
     public String userSave(@ModelAttribute("user") @Valid User user,BindingResult bindingResult, @PathVariable("id")int id){
-        if(bindingResult.hasErrors()) return "userEdit";
+        if(bindingResult.hasFieldErrors("name")) return "userEdit";
 
-        userService.saveUser(user, id);
+        userService.saveUserRoles(user, id);
         return "redirect:/users";
     }
 
