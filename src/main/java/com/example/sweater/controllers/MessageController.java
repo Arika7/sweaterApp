@@ -74,15 +74,21 @@ public String hello(@RequestParam(name = "name", required = false, defaultValue 
         messageService.save(message);
         return "redirect:/main";}
 }
-    @GetMapping("/user-messages/{id}")
-    public String getMessages(@AuthenticationPrincipal User user , @PathVariable("id")int id, Model model){
-
+    @GetMapping("/my-Messages")
+    public String getMessages(@AuthenticationPrincipal User user , Model model){
 
         User owner = userService.findById(user.getId()).get();
-        int userId = owner.getId();
 
         List<Message> messageList = owner.getMessage();
         model.addAttribute("messages", messageList);
+        return "myMessages";
+    }
+
+    @GetMapping("/user-messages/{id}")
+    public String getUserMessages(Model model,@PathVariable("id")int id){
+
+        List<Message> message= userService.findById(id).get().getMessage();
+        model.addAttribute("messages", message);
         return "myMessages";
     }
 }

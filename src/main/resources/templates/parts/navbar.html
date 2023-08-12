@@ -15,14 +15,15 @@
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <a class="nav-link" href="/">Home</a>
-      </li><li class="nav-item active">
+      </li>
+      <li class="nav-item active" sec:authorize="isAuthenticated()">
         <a class="nav-link" href="/main">Messages</a>
       </li>
       <li class="nav-item active" sec:authorize="hasAuthority('ADMIN')">
         <a class="nav-link" href="/users">User list</a>
       </li>
       <li class="nav-item active" sec:authorize="isAuthenticated()">
-        <a class="nav-link" th:href="@{/user-messages/{id}/(id=${#authentication.principal.id})}">My messages</a>
+        <a class="nav-link" th:href="@{/my-Messages}">My messages</a>
       </li>
       <li class="nav-item active" sec:authorize="isAuthenticated()">
         <a class="nav-link" href="/users/profile">Profile</a>

@@ -54,7 +54,8 @@
                     <span th:text="${message.getTag()+','+ message.getText()}"></span>
                     </div>
                     <div class="card-footer">
-                        <small th:text="*{message.authorName}"></small>
+                        <a th:text="*{message.authorName}" th:href="@{/user-messages/{id}(id = ${message.getAuthor().getId()})}">Author</a>
+                        <a th:if="${message.getAuthor().getId() == #authentication.principal.id}" class="btn btn-primary">Edit</a>
                     </div>
                     <br>
                 </div>
