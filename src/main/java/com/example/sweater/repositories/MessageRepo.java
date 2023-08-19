@@ -12,4 +12,6 @@ public interface MessageRepo extends JpaRepository<Message,Integer> {
 
     List<Message> findByTag(String tag);
 
+    Message findById(int id);
+
 }

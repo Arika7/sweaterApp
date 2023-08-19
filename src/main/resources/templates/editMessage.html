@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Main</title>
+  <th:block th:replace="parts/fragments.html :: styless">
+  </th:block>
+</head>
+<body>
+<div th:replace="parts/fragments.html :: scripts"></div>
+<div th:replace="parts/navbar.html::navbar"></div>
+<div class="container mx-8">
+      <p>
+          <a class="btn btn-primary my-3" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+              Edit message
+          </a>
+      </p>
+      <div th:class="'collapse' + ${messageText!= null || messageTag!= null ? 'show' : ''}" id="collapseExample">
+          <div class="form-group  mt-2">
+              <form th:method="POST" th:object="${message}" th:action="@{'/edit/'+${myMessage.getId()}}" enctype="multipart/form-data">
+                  <div class="form-group my-3">
+                      <input th:class="'form-control '+${#fields.hasErrors('text') ? 'is-invalid' : ''}" type="text" th:value="${messageText!= null? 'messageText':''}" th:field="*{text}" id="text" placeholder="Введите сообщение" aria-describedby="validationServer01Feedback">
+                      <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}" id="validationServer01Feedback" class="invalid-feedback">Error</div>
+                  </div>
+                  <div class="form-group my-3">
+                      <input th:class="'form-control '+${#fields.hasErrors('tag') ? 'is-invalid' : ''}" type="text" th:value="${messageTag!= null? 'messageTag':''}" th:field="*{tag}" id="tag" placeholder="Тэг">
+                      <div th:if="${#fields.hasErrors('tag')}" th:errors="*{tag}" id="validationServer02Feedback" class="invalid-feedback">Error</div>
+                  </div>
+                  <div class="my-3">
+                      <input class="form-control" type="file" id="formFile" name="file" accept="image/png, image/jpeg">
+                  </div>
+                  <input type="submit" value="Edit" class="btn btn-primary my-3">
+              </form>
+          </div>
+      </div>
+      <br>
+</div>
+</body>
+</html>

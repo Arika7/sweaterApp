@@ -10,8 +10,7 @@
 <div th:replace="parts/fragments.html :: scripts"></div>
 <div th:replace="parts/navbar.html::navbar"></div>
 <div class="container mx-8">
-    <br>
-
+  <br>
     <div th:if="${!messages.isEmpty()}">
         <div class="row row-cols-1 row-cols-md-4 g-4">
             <div class="col" th:each="message : ${messages}">
@@ -21,7 +20,8 @@
                         <span th:text="${message.getTag()+','+ message.getText()}"></span>
                     </div>
                     <div class="card-footer">
-                        <small th:text="*{message.authorName}"></small>
+                        <a th:text="*{message.authorName}" th:href="@{/user-messages/{id}(id = ${message.getAuthor().getId()})}">Author</a>
+                        <a th:if="${message.getAuthor().getId() == #authentication.principal.id}" th:href="@{'/my-Messages/edit/'+${message.getId()}}" class="btn btn-primary">Edit</a>
                     </div>
                     <br>
                 </div>

@@ -40,7 +40,7 @@ public class MessageController {
     }
 
     @GetMapping("/")
-public String hello(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model){
+    public String hello(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model){
     model.addAttribute("name", name);
     return "/auth/hello";
 }
@@ -64,21 +64,16 @@ public String hello(@RequestParam(name = "name", required = false, defaultValue 
             return "/main";
         }else {
         if(file != null && !file.getOriginalFilename().isEmpty()){
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String uuidFile = UUID.randomUUID().toString();
-        String resultFileName= uuidFile+ "." + fileName;
-        message.setFilename(resultFileName);
-        String uploadDir= "uploads";
-        FileUploadUtil.saveFile(uploadDir,resultFileName,file);}
+            addPhoto(message, file);
+        }
         message.setAuthor(user);
         messageService.save(message);
         return "redirect:/main";}
 }
+
     @GetMapping("/my-Messages")
     public String getMessages(@AuthenticationPrincipal User user , Model model){
-
         User owner = userService.findById(user.getId()).get();
-
         List<Message> messageList = owner.getMessage();
         model.addAttribute("messages", messageList);
         return "myMessages";
@@ -91,4 +86,38 @@ public String hello(@RequestParam(name = "name", required = false, defaultValue 
         model.addAttribute("messages", message);
         return "myMessages";
     }
+
+    @GetMapping("/my-Messages/edit/{id}")
+    public String editUserMessages(Model model,@PathVariable("id")int id){
+
+        Message message = messageService.findById(id);
+        model.addAttribute("myMessage", message);
+        model.addAttribute("message", message);
+        model.addAttribute("messageText", message.getText());
+        model.addAttribute("messageTag", message.getTag());
+        return "editMessage";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editMessage(@AuthenticationPrincipal User user ,@PathVariable("id") int id, @ModelAttribute("message") @Valid Message message, BindingResult bindingResult,  Model model, @RequestParam("file") MultipartFile file) throws IOException {
+        if(bindingResult.hasErrors()){
+             return "redirect:/edit/"+ id;
+        }else {
+            if(file != null && !file.getOriginalFilename().isEmpty()){
+                addPhoto(message, file);
+            }
+            message.setAuthor(user);
+            messageService.update(id,message);
+            return "redirect:/my-Messages";}}
+
+    private static void addPhoto(Message message, MultipartFile file) throws IOException {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String uuidFile = UUID.randomUUID().toString();
+        String resultFileName= uuidFile+ "." + fileName;
+        message.setFilename(resultFileName);
+        String uploadDir= "uploads";
+        FileUploadUtil.saveFile(uploadDir,resultFileName, file);
+    }
+
+
 }

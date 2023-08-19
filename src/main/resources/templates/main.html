@@ -55,7 +55,7 @@
                     </div>
                     <div class="card-footer">
                         <a th:text="*{message.authorName}" th:href="@{/user-messages/{id}(id = ${message.getAuthor().getId()})}">Author</a>
-                        <a th:if="${message.getAuthor().getId() == #authentication.principal.id}" class="btn btn-primary">Edit</a>
+                        <a th:if="${message.getAuthor().getId() == #authentication.principal.id}" th:href="@{'/my-Messages/edit/'+${message.getId()}}" class="btn btn-primary">Edit</a>
                     </div>
                     <br>
                 </div>

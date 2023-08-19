@@ -22,6 +22,14 @@ public class MessageService {
         return messageRepo.findAll();}
 
     public List<Message> findByTag(String tag){ return messageRepo.findByTag(tag);}
+
+    public Message findById(int id){return messageRepo.findById(id);}
     @Transactional
     public void save(Message message){messageRepo.save(message);}
+
+    @Transactional
+    public void update(int id,Message newMessage){
+        newMessage.setId(id);
+        messageRepo.save(newMessage);
+    }
 }
